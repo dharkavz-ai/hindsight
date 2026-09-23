@@ -8,8 +8,10 @@ numbered exhibits, and a local LLM plays "Past You": it cites those exhibits and
 one hard question.
 
 Everything runs on-device through the [QVAC SDK](https://github.com/tetherto/qvac):
-no API key, no server, no usage bill. Your journal never leaves your machine, which is the
-whole point of a journal.
+no API key, no server in the cloud, no usage bill. Your journal never leaves your machine,
+which is the whole point of a journal.
+
+Use it two ways: in the **terminal**, or in your **browser** at `http://localhost:3000`.
 
 ## Demo
 
@@ -25,8 +27,9 @@ Exhibit C  2025-02-11.md · relevance 0.62
   If I ever try again, I need clients lined up before I quit, not after.
 
 PAST YOU TAKES THE STAND
-Exhibit A shows you were ready to quit, but Exhibit B reveals your fear of the
-empty calendar. Exhibit C reinforces the same pattern... Will you truly follow through?
+Exhibit A shows you were ready to quit, but Exhibit B reveals you were afraid of the
+empty calendar. Your current statement conflicts with that fear... What will you do
+when the calendar is empty?
 ```
 
 ## How it works
@@ -56,7 +59,7 @@ cd hindsight
 npm install
 ```
 
-## Run
+## Run in the terminal
 
 Windows (Command Prompt):
 
@@ -77,6 +80,28 @@ One-shot mode (ask a single question and exit):
 node hindsight.js "I'm going to quit my job and go freelance next month"
 ```
 
+## Run in the browser
+
+Windows (Command Prompt):
+
+```cmd
+set QVAC_CONFIG_PATH=./qvac.config.json
+npm run web
+```
+
+macOS / Linux:
+
+```bash
+QVAC_CONFIG_PATH=./qvac.config.json npm run web
+```
+
+Wait for `Hindsight is ready`, then open **http://localhost:3000** in your browser.
+
+This is not a public website. The server runs on your own computer and listens on
+`127.0.0.1` only, so the page opens only on the machine where you started it, and only
+while it is running. Press `Ctrl+C` in the terminal to stop it. To use another port, set
+`PORT` (for example `set PORT=4000`).
+
 ## Use your own notes
 
 Put `.md` or `.txt` files in a folder and point Hindsight at it:
@@ -85,10 +110,20 @@ Put `.md` or `.txt` files in a folder and point Hindsight at it:
 HINDSIGHT_NOTES=./notes-private npm start
 ```
 
-On Windows Command Prompt: `set HINDSIGHT_NOTES=./notes-private` then `npm start`.
+On Windows Command Prompt: `set HINDSIGHT_NOTES=./notes-private` then `npm start`
+(or `npm run web`).
 
 The `notes/` folder ships with fictional sample entries so the demo works immediately.
 `notes-private/` is git-ignored so your real journal is never committed.
+
+## Project layout
+
+| File | What it does |
+|------|--------------|
+| `hindsight.js` | Terminal app |
+| `server.js` | Local web server (Node's built-in `http`, no extra dependencies) |
+| `public/index.html` | Browser page that streams the answer |
+| `notes/` | Sample journal entries |
 
 ## Notes
 
